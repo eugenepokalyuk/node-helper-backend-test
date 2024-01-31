@@ -50,7 +50,8 @@ Response:
         "email": string,
         "name": string,
         "avatarUrl": string, 
-        "description": string
+        "description": string,
+        "coverUrl": string
     }
 }
 ```
@@ -83,6 +84,7 @@ Response:
         "name": string,
         "avatarUrl": string,
         "description": string
+        "coverUrl": string
     }
 }
 ```
@@ -128,6 +130,37 @@ Response:
 ```
 ## Удаление аватара
 URL: ```/api/account/avatar/delete```
+
+Method: ```DELETE```
+
+Request: ```Header с JWT Token```
+
+Response:
+```
+{
+    "success": boolean,
+    "message": string
+}
+```
+
+## Загрузка заднего фона
+URL: ```/api/account/cover/upload```
+
+Method: ```POST```
+
+Request: ```Header с JWT Token```
+
+Response:
+```
+{
+    "success": boolean,
+    "message": string,
+    "coverUrl": string
+}
+```
+
+## Удаление заднего фона
+URL: ```/api/account/cover/delete```
 
 Method: ```DELETE```
 
