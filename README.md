@@ -1,6 +1,16 @@
 # Тестовое задание для вакансии backend разработчик в Helper 
 > Задача: Описать методы  API в любом удобном тебе формате. Можно простым текстом, markdown, а можно и в Свагере.
 
+# Описание компонентов проекта:
+
+- ```app.js``` - основной файл приложения, запускает сервер Express.
+- ```Database.js``` - класс, который управляет всеми взаимодействиями с бд.
+- ```jwtUtils.js``` - утилита для работы с JWT.
+- ```authMiddleware.js``` - middleware для аутентификации пользователя.
+- ```authRoutes.js``` - роутер, связанный с аутентификацией пользователя.
+- ```authController.js``` - контроллер для обработки запросов аутентификации.
+- ```accountRoutes.js``` - роутер для управления аккаунтами пользователей.
+- ```accountController.js``` - контроллер для управления аккаунтами пользователей.
 
 ## Регистрация
 URL: ```/api/auth/register```
@@ -19,8 +29,7 @@ Response:
 ```
 { 
     "success": boolean,
-    "accessToken": string,
-    "refreshToken": string,
+    "token": string,
     "account": {
         "email": string,
         "name": string
@@ -44,8 +53,7 @@ Response:
 ```
 { 
     "success": boolean, 
-    "accessToken": string
-    "refreshToken": string
+    "token": string
     "account": {
         "email": string,
         "name": string,
@@ -55,6 +63,8 @@ Response:
     }
 }
 ```
+> token: Brearer + [token]
+
 ## Выход из системы
 URL: ```/api/auth/logout```
 
@@ -66,8 +76,11 @@ Response:
 ```
 {
     "success": boolean,
+    "message": string
 }
 ```
+> token: Brearer + [token]
+
 ## Получение информации аккаунта
 URL: ```/api/account```
 
@@ -83,11 +96,13 @@ Response:
         "email": string,
         "name": string,
         "avatarUrl": string,
-        "description": string
+        "description": string,
         "coverUrl": string
     }
 }
 ```
+> token: Brearer + [token]
+
 ## Редактирование аккаунта
 URL: ```/api/account```
 
@@ -113,13 +128,14 @@ Response:
     }
 }
 ```
+> token: Brearer + [token]
+
 ## Загрузка аватара
 URL: ```/api/account/avatar/upload```
 
 Method: ```POST```
 
 Request: ```Header с JWT Token```
-
 Response:
 ```
 {
@@ -128,6 +144,10 @@ Response:
     "avatarUrl": string
 }
 ```
+> token: Brearer + [token]
+
+> В "Body" нужно выбрать опцию "form-data". Создать ключ "avatar" и выберать тип "File", загрузить файл
+
 ## Удаление аватара
 URL: ```/api/account/avatar/delete```
 
@@ -142,6 +162,7 @@ Response:
     "message": string
 }
 ```
+> token: Brearer + [token]
 
 ## Загрузка заднего фона
 URL: ```/api/account/cover/upload```
@@ -158,6 +179,9 @@ Response:
     "coverUrl": string
 }
 ```
+> token: Brearer + [token]
+
+> В "Body" нужно выбрать опцию "form-data". Создать ключ "cover" и выберать тип "File", загрузить файл
 
 ## Удаление заднего фона
 URL: ```/api/account/cover/delete```
@@ -173,6 +197,7 @@ Response:
     "message": string
 }
 ```
+> token: Brearer + [token]
 
 ## Список аккаунтов
 URL: ```/api/accounts/list```
@@ -193,3 +218,4 @@ Response:
     }]
 }
 ```
+> token: Brearer + [token]
