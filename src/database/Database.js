@@ -1,35 +1,32 @@
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
-const bcrypt = require('bcrypt');
-
-class Database {
-    constructor() {
-        this.dbPath = path.resolve(__dirname, 'helperApi.db');
-        this.db = new sqlite3.Database(this.dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var sqlite3_1 = __importDefault(require("sqlite3"));
+var path_1 = __importDefault(require("path"));
+var bcrypt_1 = __importDefault(require("bcrypt"));
+var Database = /** @class */ (function () {
+    function Database() {
+        var _this = this;
+        this.dbPath = path_1.default.resolve(__dirname, 'helperApi.db');
+        this.db = new sqlite3_1.default.Database(this.dbPath, sqlite3_1.default.OPEN_READWRITE | sqlite3_1.default.OPEN_CREATE, function (err) {
             if (err) {
                 console.error('Ошибка при открытии базы данных', err.message);
-            } else {
+            }
+            else {
                 console.log('Подключено к базе данных SQLite.');
-                this.initDb();
+                _this.initDb();
             }
         });
     }
-
-    initDb() {
-        this.db.run(`CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL,
-            avatarUrl TEXT,
-            description TEXT,
-            coverUrl TEXT
-        )`);
-    }
-
-    registerUser({ name, email, password }, callback) {
-        const checkEmailQuery = `SELECT email FROM users WHERE email = ?`;
-        this.db.get(checkEmailQuery, [email], (err, row) => {
+    Database.prototype.initDb = function () {
+        this.db.run("CREATE TABLE IF NOT EXISTS users (\n            id INTEGER PRIMARY KEY AUTOINCREMENT,\n            name TEXT NOT NULL,\n            email TEXT UNIQUE NOT NULL,\n            password TEXT NOT NULL,\n            avatarUrl TEXT,\n            description TEXT,\n            coverUrl TEXT\n        )");
+    };
+    Database.prototype.registerUser = function (user, callback) {
+        var _this = this;
+        var checkEmailQuery = "SELECT email FROM users WHERE email = ?";
+        this.db.get(checkEmailQuery, [user.email], function (err, row) {
             if (err) {
                 callback(err);
                 return;
@@ -38,81 +35,73 @@ class Database {
                 callback(new Error("Пользователь с таким email уже существует"));
                 return;
             }
-
-            const hashedPassword = bcrypt.hashSync(password, 10);
-            const insertQuery = `INSERT INTO users (name, email, password) VALUES (?, ?, ?)`;
-            this.db.run(insertQuery, [name, email, hashedPassword], function (err) {
+            var hashedPassword = bcrypt_1.default.hashSync(user.password, 10);
+            var insertQuery = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+            _this.db.run(insertQuery, [user.name, user.email, hashedPassword], function (err) {
                 if (err) {
                     callback(err);
                     return;
                 }
-                callback(null, { userId: this.lastID });
+                callback(null, this.lastID);
             });
         });
-    }
-
-    loginUser({ email, password }, callback) {
-        const query = `SELECT * FROM users WHERE email = ?`;
-
-        this.db.get(query, [email], (err, user) => {
+    };
+    Database.prototype.loginUser = function (email, password, callback) {
+        var query = "SELECT * FROM users WHERE email = ?";
+        this.db.get(query, [email], function (err, user) {
             if (err) {
                 callback(err);
-            } else if (user && bcrypt.compareSync(password, user.password)) {
-                callback(null, { user });
-            } else {
+            }
+            else if (user && bcrypt_1.default.compareSync(password, user.password)) {
+                callback(null, user);
+            }
+            else {
                 callback(new Error("Неверные учетные данные"));
             }
         });
-    }
-
-    getUserById(userId, callback) {
-        const query = `SELECT * FROM users WHERE id = ?`;
-        this.db.get(query, [userId], (err, row) => {
-            callback(err, row);
+    };
+    Database.prototype.getUserById = function (userId, callback) {
+        var query = "SELECT * FROM users WHERE id = ?";
+        this.db.get(query, [userId], function (err, user) {
+            callback(err, user);
         });
-    }
-
-    updateUser(userId, { name, description }, callback) {
-        const query = `UPDATE users SET name = ?, description = ? WHERE id = ?`;
-        this.db.run(query, [name, description, userId], (err) => {
+    };
+    Database.prototype.updateUser = function (userId, userDetails, callback) {
+        var query = "UPDATE users SET name = ?, description = ? WHERE id = ?";
+        this.db.run(query, [userDetails.name, userDetails.description, userId], function (err) {
             callback(err);
         });
-    }
-
-    updateUserAvatar(userId, avatarUrl, callback) {
-        const query = `UPDATE users SET avatarUrl = ? WHERE id = ?`;
-        this.db.run(query, [avatarUrl, userId], (err) => {
+    };
+    Database.prototype.getAvatarUrlById = function (userId, callback) {
+        var query = "SELECT avatarUrl FROM users WHERE id = ?";
+        this.db.get(query, [userId], function (err, row) {
+            callback(err, row ? row.avatarUrl : undefined);
+        });
+    };
+    Database.prototype.updateUserAvatar = function (userId, avatarUrl, callback) {
+        var query = "UPDATE users SET avatarUrl = ? WHERE id = ?";
+        this.db.run(query, [avatarUrl, userId], function (err) {
             callback(err);
         });
-    }
-
-    getAvatarUrlById(userId, callback) {
-        const query = `SELECT avatarUrl FROM users WHERE id = ?`;
-        this.db.get(query, [userId], (err, row) => {
-            callback(err, row ? row.avatarUrl : null);
+    };
+    Database.prototype.getCoverUrlById = function (userId, callback) {
+        var query = "SELECT coverUrl FROM users WHERE id = ?";
+        this.db.get(query, [userId], function (err, row) {
+            callback(err, row ? row.coverUrl : undefined);
         });
-    }
-
-    updateUserCover(userId, coverUrl, callback) {
-        const query = `UPDATE users SET coverUrl = ? WHERE id = ?`;
-        this.db.run(query, [coverUrl, userId], (err) => {
+    };
+    Database.prototype.updateUserCover = function (userId, coverUrl, callback) {
+        var query = "UPDATE users SET coverUrl = ? WHERE id = ?";
+        this.db.run(query, [coverUrl, userId], function (err) {
             callback(err);
         });
-    }
-
-    getCoverUrlById(userId, callback) {
-        const query = `SELECT coverUrl FROM users WHERE id = ?`;
-        this.db.get(query, [userId], (err, row) => {
-            callback(err, row ? row.coverUrl : null);
+    };
+    Database.prototype.getAllUsers = function (callback) {
+        var query = "SELECT email, name, avatarUrl, description FROM users";
+        this.db.all(query, [], function (err, users) {
+            callback(err, users);
         });
-    }
-
-    getAllUsers(callback) {
-        const query = `SELECT email, name, avatarUrl, description FROM users`;
-        this.db.all(query, [], (err, rows) => {
-            callback(err, rows);
-        });
-    }
-}
-
-module.exports = new Database();
+    };
+    return Database;
+}());
+exports.default = new Database();
