@@ -2,8 +2,8 @@ import express, { Express, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import helmet from 'helmet';
-import authRoutes from './routes/authRoutes';
-import accountRoutes from './routes/accountRoutes';
+import authRoutes from './src/routes/authRoutes';
+import accountRoutes from './src/routes/accountRoutes';
 
 const app: Express = express();
 const port = process.env.PORT || 3000;

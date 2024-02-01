@@ -8,12 +8,14 @@
     "skipLibCheck": true, /* Skip type checking all .d.ts files. */
     "typeRoots": [
       "./node_modules/@types",
+      "./src/types",
       "./types"
-    ]
+    ],
   },
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Recommended",
   "include": [
+    "app",
     "src/**/*",
     "./"
   ],

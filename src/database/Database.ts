@@ -113,7 +113,7 @@ class Database {
         });
     }
 
-    public updateUserAvatar(userId: number, avatarUrl: string, callback: (err: Error | null) => void): void {
+    public updateUserAvatar(userId: number, avatarUrl: string | null, callback: (err: Error | null) => void): void {
         const query = `UPDATE users SET avatarUrl = ? WHERE id = ?`;
         this.db.run(query, [avatarUrl, userId], (err) => {
             callback(err);
@@ -127,7 +127,7 @@ class Database {
         });
     }
 
-    public updateUserCover(userId: number, coverUrl: string, callback: (err: Error | null) => void): void {
+    public updateUserCover(userId: number, coverUrl: string | null, callback: (err: Error | null) => void): void {
         const query = `UPDATE users SET coverUrl = ? WHERE id = ?`;
         this.db.run(query, [coverUrl, userId], (err) => {
             callback(err);
