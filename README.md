@@ -1,6 +1,17 @@
 # Тестовое задание для вакансии backend разработчик в Helper 
 > Задача: Описать методы  API в любом удобном тебе формате. Можно простым текстом, markdown, а можно и в Свагере.
 
+# Стэк технологий
+<ul>
+  <li>NodeJS 16.20.2</li>
+  <li>Express 4.18.2</li>
+  <li>TypeScript 5.3.3</li>
+  <li>SQLite3 5.1.7</li>
+</ul>
+<a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=nodejs,express,typescript,sqlite" />
+</a>
+
 # Руководство запуска проекта:
 ## Порядок запуска:
 1. Установка зависимостей:
