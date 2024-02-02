@@ -2,6 +2,14 @@
   "compilerOptions": {
     "target": "es5", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
     "module": "commonjs", /* Specify what module code is generated. */
+    "lib": [
+      "es6"
+    ],
+    "allowJs": true,
+    "outDir": "build",
+    "rootDir": "src",
+    "noImplicitAny": true,
+    "resolveJsonModule": true,
     "esModuleInterop": true, /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
     "forceConsistentCasingInFileNames": true, /* Ensure that casing is correct in imports. */
     "strict": true, /* Enable all strict type-checking options. */
@@ -9,15 +17,14 @@
     "typeRoots": [
       "./node_modules/@types",
       "./src/types",
-      "./types"
+      "./types",
     ],
   },
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Recommended",
   "include": [
     "app",
-    "src/**/*",
-    "./"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules"

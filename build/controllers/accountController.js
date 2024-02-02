@@ -1,158 +1,159 @@
-import { Response } from 'express';
-import fs from 'fs';
-import path from 'path';
-import db from '../database/Database';
-
-export const getAccountInfo = (req: any, res: Response): void => {
-    const userId = req.user?.id;
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getAccountsList = exports.deleteCover = exports.uploadCover = exports.deleteAvatar = exports.uploadAvatar = exports.updateAccountInfo = exports.getAccountInfo = void 0;
+var fs_1 = __importDefault(require("fs"));
+var path_1 = __importDefault(require("path"));
+var Database_1 = __importDefault(require("../database/Database"));
+var getAccountInfo = function (req, res) {
+    var _a;
+    var userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
     if (userId === undefined) {
         res.status(400).json({ success: false, message: "Идентификатор пользователя отсутствует" });
-        return
+        return;
     }
-
-    db.getUserById(userId, (err, user) => {
+    Database_1.default.getUserById(userId, function (err, user) {
         if (err || !user) {
             res.status(404).json({ success: false, message: "Пользователь не найден" });
-        } else {
+        }
+        else {
             res.json({ success: true, account: user });
         }
     });
 };
-
-export const updateAccountInfo = (req: any, res: Response): void => {
-    const userId = req.user?.id;
-    const { name, description } = req.body;
-
+exports.getAccountInfo = getAccountInfo;
+var updateAccountInfo = function (req, res) {
+    var _a;
+    var userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+    var _b = req.body, name = _b.name, description = _b.description;
     if (userId === undefined) {
         res.status(400).json({ success: false, message: "Идентификатор пользователя отсутствует" });
-        return
+        return;
     }
-
-    db.updateUser(userId, { name, description }, (err) => {
+    Database_1.default.updateUser(userId, { name: name, description: description }, function (err) {
         if (err) {
             res.status(500).json({ success: false, message: "Ошибка при обновлении информации аккаунта" });
-        } else {
+        }
+        else {
             res.json({ success: true, message: "Информация аккаунта обновлена" });
         }
     });
 };
-
-export const uploadAvatar = (req: any, res: Response): void => {
+exports.updateAccountInfo = updateAccountInfo;
+var uploadAvatar = function (req, res) {
+    var _a;
     if (!req.file) {
         res.status(400).send('Нет файла для загрузки.');
         return;
     }
-
-    const userId = req.user?.id;
-    const avatarUrl = `/uploads/${req.file.filename}`;
-
+    var userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+    var avatarUrl = "/uploads/".concat(req.file.filename);
     if (userId === undefined) {
         res.status(400).json({ success: false, message: "Идентификатор пользователя отсутствует" });
-        return
+        return;
     }
-
-    db.updateUserAvatar(userId, avatarUrl, (err) => {
+    Database_1.default.updateUserAvatar(userId, avatarUrl, function (err) {
         if (err) {
             res.status(500).json({ success: false, message: "Ошибка при обновлении аватара" });
-        } else {
-            res.json({ success: true, message: "Аватар обновлен", avatarUrl });
+        }
+        else {
+            res.json({ success: true, message: "Аватар обновлен", avatarUrl: avatarUrl });
         }
     });
 };
-
-export const deleteAvatar = (req: any, res: Response): void => {
-    const userId = req.user?.id;
-
+exports.uploadAvatar = uploadAvatar;
+var deleteAvatar = function (req, res) {
+    var _a;
+    var userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
     if (userId === undefined) {
         res.status(400).json({ success: false, message: "Идентификатор пользователя отсутствует" });
-        return
+        return;
     }
-
-    db.getAvatarUrlById(userId, (err, avatarUrl) => {
+    Database_1.default.getAvatarUrlById(userId, function (err, avatarUrl) {
         if (err || !avatarUrl) {
             res.status(500).json({ success: false, message: "Ошибка при удалении аватара" });
             return;
         }
-
-        fs.unlink(path.join(__dirname, '../..', avatarUrl), (err) => {
+        fs_1.default.unlink(path_1.default.join(__dirname, '../..', avatarUrl), function (err) {
             if (err) {
                 console.error(err);
                 res.status(500).json({ success: false, message: "Ошибка при удалении файла аватара" });
                 return;
             }
-
-            db.updateUserAvatar(userId, null, (err) => {
+            Database_1.default.updateUserAvatar(userId, null, function (err) {
                 if (err) {
                     res.status(500).json({ success: false, message: "Ошибка при обновлении информации о пользователе" });
-                } else {
+                }
+                else {
                     res.json({ success: true, message: "Аватар удален" });
                 }
             });
         });
     });
 };
-
-export const uploadCover = (req: any, res: Response): void => {
+exports.deleteAvatar = deleteAvatar;
+var uploadCover = function (req, res) {
+    var _a;
     if (!req.file) {
         res.status(400).send('Нет файла для загрузки.');
         return;
     }
-
-    const userId = req.user?.id;
-    const coverUrl = `/uploads/${req.file.filename}`;
-
+    var userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+    var coverUrl = "/uploads/".concat(req.file.filename);
     if (userId === undefined) {
         res.status(400).json({ success: false, message: "Идентификатор пользователя отсутствует" });
-        return
+        return;
     }
-
-    db.updateUserCover(userId, coverUrl, (err) => {
+    Database_1.default.updateUserCover(userId, coverUrl, function (err) {
         if (err) {
             res.status(500).json({ success: false, message: "Ошибка при обновлении обложки" });
-        } else {
-            res.json({ success: true, message: "Обложка обновлена", coverUrl });
+        }
+        else {
+            res.json({ success: true, message: "Обложка обновлена", coverUrl: coverUrl });
         }
     });
 };
-
-export const deleteCover = (req: any, res: Response): void => {
-    const userId = req.user?.id;
-
+exports.uploadCover = uploadCover;
+var deleteCover = function (req, res) {
+    var _a;
+    var userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
     if (userId === undefined) {
         res.status(400).json({ success: false, message: "Идентификатор пользователя отсутствует" });
-        return
+        return;
     }
-
-    db.getCoverUrlById(userId, (err, coverUrl) => {
+    Database_1.default.getCoverUrlById(userId, function (err, coverUrl) {
         if (err || !coverUrl) {
             res.status(500).json({ success: false, message: "Ошибка при удалении обложки" });
             return;
         }
-
-        fs.unlink(path.join(__dirname, '../..', coverUrl), (err) => {
+        fs_1.default.unlink(path_1.default.join(__dirname, '../..', coverUrl), function (err) {
             if (err) {
                 console.error(err);
                 res.status(500).json({ success: false, message: "Ошибка при удалении файла обложки" });
                 return;
             }
-
-            db.updateUserCover(userId, null, (err) => {
+            Database_1.default.updateUserCover(userId, null, function (err) {
                 if (err) {
                     res.status(500).json({ success: false, message: "Ошибка при обновлении информации о пользователе" });
-                } else {
+                }
+                else {
                     res.json({ success: true, message: "Обложка удалена" });
                 }
             });
         });
     });
 };
-
-export const getAccountsList = (req: any, res: Response): void => {
-    db.getAllUsers((err, users) => {
+exports.deleteCover = deleteCover;
+var getAccountsList = function (req, res) {
+    Database_1.default.getAllUsers(function (err, users) {
         if (err) {
             res.status(500).json({ success: false, message: "Ошибка при получении списка пользователей" });
-        } else {
+        }
+        else {
             res.json({ success: true, accounts: users });
         }
     });
 };
+exports.getAccountsList = getAccountsList;
