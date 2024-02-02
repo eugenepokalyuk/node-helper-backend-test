@@ -152,7 +152,7 @@ Response:
 > token: Brearer + [token]
 
 ## Загрузка аватара
-URL: ```/api/account/avatar/upload```
+URL: ```/api/account/avatar```
 
 Method: ```POST```
 
@@ -170,7 +170,7 @@ Response:
 > В "Body" нужно выбрать опцию "form-data". Создать ключ "avatar" и выберать тип "File", загрузить файл
 
 ## Удаление аватара
-URL: ```/api/account/avatar/delete```
+URL: ```/api/account/avatar```
 
 Method: ```DELETE```
 
@@ -186,7 +186,7 @@ Response:
 > token: Brearer + [token]
 
 ## Загрузка заднего фона
-URL: ```/api/account/cover/upload```
+URL: ```/api/account/cover```
 
 Method: ```POST```
 
@@ -205,7 +205,7 @@ Response:
 > В "Body" нужно выбрать опцию "form-data". Создать ключ "cover" и выберать тип "File", загрузить файл
 
 ## Удаление заднего фона
-URL: ```/api/account/cover/delete```
+URL: ```/api/account/cover```
 
 Method: ```DELETE```
 
