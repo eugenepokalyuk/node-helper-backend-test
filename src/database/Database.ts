@@ -1,6 +1,6 @@
-import sqlite3 from 'sqlite3';
-import path from 'path';
 import bcrypt from 'bcrypt';
+import path from 'path';
+import sqlite3 from 'sqlite3';
 
 type User = {
     id?: number;
@@ -31,7 +31,7 @@ class Database {
     private dbPath = path.resolve(__dirname, 'helperApi.db');
 
     constructor() {
-        this.db = new sqlite3.Database(this.dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
+        this.db = new sqlite3.Database(this.dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err: any) => {
             if (err) {
                 console.error('Ошибка при открытии базы данных', err.message);
             } else {
@@ -55,7 +55,7 @@ class Database {
 
     public registerUser(user: User, callback: (err: Error | null, userId?: number) => void): void {
         const checkEmailQuery = `SELECT email FROM users WHERE email = ?`;
-        this.db.get(checkEmailQuery, [user.email], (err, row) => {
+        this.db.get(checkEmailQuery, [user.email], (err: Error | null, row: any) => {
             if (err) {
                 callback(err);
                 return;
@@ -68,7 +68,7 @@ class Database {
             const hashedPassword = bcrypt.hashSync(user.password, 10);
             const insertQuery = `INSERT INTO users (name, email, password) VALUES (?, ?, ?)`;
 
-            this.db.run(insertQuery, [user.name, user.email, hashedPassword], function (err) {
+            this.db.run(insertQuery, [user.name, user.email, hashedPassword], (err: Error | null) => {
                 if (err) {
                     callback(err);
                     return;

@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Response } from 'express';
 import { verifyToken } from '../utils/jwtUtils';
 
-export const authenticate = (req: Request, res: Response, next: NextFunction): void => {
+export const authenticate = (req: any, res: Response, next: NextFunction): void => {
     const token = req.headers.authorization?.split(' ')[1];
 
     if (!token) {

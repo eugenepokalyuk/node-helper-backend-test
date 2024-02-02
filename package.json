@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "app.ts",
   "scripts": {
+    "start:dev": "npx nodemon",
     "build": "tsc",
     "dev": "nodemon app.ts"
   },
